@@ -6,14 +6,10 @@
 #SBATCH -t 2-00:00:00
 #SBATCH -p koeniglab
 
-DIR=/rkett/bigdata/row_gwas
-mkdir $DIR
+DIR=/rhome/rkett/bigdata/row_gwas
+cd $DIR
 # set your VCF file
 VCF=Barley_exome_GH_LD_prunded.recode.vcf
-# copy VCF file to new project directory
-cp $VCF $DIR
-# now move to working directory
-cd $DIR
 module load plink/1.90b3.38
 ## Filter on MAF and missing data
 plink --vcf "$VCF" --maf 0.01 --geno 0.05 --make-bed --out $DIR/filtered
