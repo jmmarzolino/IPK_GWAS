@@ -12,15 +12,28 @@ cd $DIR
 VCF=Barley_exome_GH_LD_prunded.recode.vcf
 module load plink/1.90b3.38
 ## Filter on MAF and missing data
-plink --vcf "$VCF" --maf 0.01 --geno 0.05 --make-bed --out $DIR/filtered
+plink --vcf "$VCF" --allow-extra-chr --maf 0.01 --geno 0.05 --make-bed --out $DIR/filtered
 
 
-# determine which seqs to use as phenotypes
-Rscript 3b_prep_phenotypes.R
-
+# format pheotype file
+cut -f3 Phenotype_GWAS > Accession_Codes
+cut -f8 Phenotype_GWAS > GWAS_Rowx
+cut -f2 --delimiter=\  GWAS_Rowx > GWAS_Row2
+paste Accession_Codes GWAS_Row2 > formatted_phenotypes
 # add phenotypes to .fam
-PHENOS=../../results/gwas/phenotypes_transformed.txt
-GENOS=../../results/gwas/filtered.fam
+
+#!/bin/bash
+#SBATCH --job-name=GWAS
+#SBATCH -o GWAS.stdout
+#SBATCH --ntasks=2
+#SBATCH --mem=64gb
+#SBATCH -t 2-00:00:00
+#SBATCH -p koeniglab
+
+DIR=/rhome/rkett/bigdata/row_gwas
+cd $DIR
+GENOS=filtered.fam
+PHENOS=formatted_phenotypes
 
 # check that IDs in phenos and genos match
 DIFS=$(diff <(cut -d" " -f1 "$GENOS") <(cut -f1 "$PHENOS" | tail -n +2) | wc -l)
