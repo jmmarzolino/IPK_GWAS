@@ -9,10 +9,10 @@
 #SBATCH -t 2-00:00:00
 #SBATCH -p koeniglab
 
-DIR=/rkett001/bigdata/row_gwas
+DIR=/rkett/bigdata/row_gwas
 mkdir $DIR
 # set your VCF file
-VCF=../../data/SNPs/africa_and1001.EVA_filtered.vcf.gz
+VCF=Barley_exome_GH_LD_prunded.recode.vcf
 # copy VCF file to new project directory
 cp $VCF $DIR
 # now move to working directory
