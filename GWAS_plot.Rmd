@@ -37,6 +37,8 @@ gwas_results$chr <- gsub("chr7H_328612001_657224000", 7, gwas_results$chr)
 gwas_results$chr <- gsub("chrUn_1_124887353", 0, gwas_results$chr)
 gwas_results$chr <- gsub("chrUn_124887354_249774706", 0, gwas_results$chr)
 
+gwas_results$chr <- as.numeric(gwas_results$chr)
+
 write.table(gwas_results, file="gwas_results", quote=F, sep="\t", row.names=F, col.names=T)
 
 
