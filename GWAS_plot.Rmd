@@ -1,0 +1,9 @@
+
+# load the library
+library(qqman)
+
+# load data
+gwas_results <- read.delim("/bigdata/koeniglab/rkett/row_gwas/results/row_assoc.assoc.txt")
+
+# Make the Manhattan plot on the gwasResults dataset
+manhattan(gwas_results, chr="CHR", bp="BP", snp="SNP", p="P" )
