@@ -28,7 +28,7 @@ paste Accession_Codes GWAS_Row2 > formatted_phenotypes
 
 #!/bin/bash
 #SBATCH --job-name=GWAS
-#SBATCH -o GWAS.stdout
+#SBATCH -o GWAS2.stdout
 #SBATCH --ntasks=2
 #SBATCH --mem=64gb
 #SBATCH -t 2-00:00:00
@@ -36,14 +36,14 @@ paste Accession_Codes GWAS_Row2 > formatted_phenotypes
 
 DIR=/rhome/rkett/bigdata/row_gwas
 cd $DIR
-GENOS=filtered2.fam
-PHENOS=formatted_phenotypes2
+GENOS=filtered.fam
+PHENOS=formatted_phenotypes
 
 # check that IDs in phenos and genos match
 DIFS=$(diff <(cut -d" " -f1 "$GENOS") <(cut -f1 "$PHENOS" | tail -n +2) | wc -l)
-# delete non-common entries:  ERR753224 from genotype data & ERR753318 from phenotype data
 
 # no differences between ID lists
+<<<<<<< HEAD
 paste  <(cut -d" " -f1-5 Barley_exome_GH_LD_INDEL_MAF.fam) <(cut -f6 binary) |  > $GENOS
 
 
@@ -67,3 +67,11 @@ cd /rhome/rkett/bigdata/row_gwas
 
 # association with mlm
 /rhome/rkett/software/gemma0.98.1 -bfile Barley_exome_GH_LD_INDEL_MAF -k results/related_matrix_binary.cXX.txt -lmm 4 -outdir results/ -o row_assoc
+=======
+if [ "$DIFS" = 0 ]
+then
+	paste  <(cut -d" " -f1-5 "$GENOS") <(cut -f2 "$PHENOS" | tail -n +2) | sed 's/\t/ /g' > $(basename $GENOS).tmp
+	mv $(basename $GENOS).tmp "$GENOS"
+	head -n 1 "$PHENOS" | cut -f2 | sed 's/\t/\n/g' > GWAS3
+fi
+>>>>>>> 5200884598aee6d776f732901472664c368b9a66
