@@ -8,38 +8,38 @@
 
 
 # load the library
-library(qqman)
+#library(qqman)
 
 # load data
 rows.assoc <- read.delim("/bigdata/koeniglab/rkett/row_gwas/results/rows.assoc.txt")
 gwas_results <- rows.assoc
-gwas_results$chr <- gsub("chr1H_1_279267716", 1, rows.assoc$chr)
-gwas_results$chr <- gsub("chr1H_279267717_558535432", 1, rows.assoc$chr)
+gwas_results$chr <- gsub("chr1H_1_279267716", 1, gwas_results$chr)
+gwas_results$chr <- gsub("chr1H_279267717_558535432", 1, gwas_results$chr)
 
-gwas_results$chr <- gsub("chr2H_1_384037512", 2, rows.assoc$chr)
-gwas_results$chr <- gsub("chr2H_384037513_768075024", 2, rows.assoc$chr)
+gwas_results$chr <- gsub("chr2H_1_384037512", 2, gwas_results$chr)
+gwas_results$chr <- gsub("chr2H_384037513_768075024", 2, gwas_results$chr)
 
-gwas_results$chr <- gsub("chr3H_1_349855557", 3, rows.assoc$chr)
-gwas_results$chr <- gsub("chr3H_349855558_699711114", 3, rows.assoc$chr)
+gwas_results$chr <- gsub("chr3H_1_349855557", 3, gwas_results$chr)
+gwas_results$chr <- gsub("chr3H_349855558_699711114", 3, gwas_results$chr)
 
-gwas_results$chr <- gsub("chr4H_1_323530079", 4, rows.assoc$chr)
-gwas_results$chr <- gsub("chr4H_323530080_647060158", 4, rows.assoc$chr)
+gwas_results$chr <- gsub("chr4H_1_323530079", 4, gwas_results$chr)
+gwas_results$chr <- gsub("chr4H_323530080_647060158", 4, gwas_results$chr)
 
-gwas_results$chr <- gsub("chr5H_1_335015080", 5, rows.assoc$chr)
-gwas_results$chr <- gsub("chr5H_335015081_670030160", 5, rows.assoc$chr)
+gwas_results$chr <- gsub("chr5H_1_335015080", 5, gwas_results$chr)
+gwas_results$chr <- gsub("chr5H_335015081_670030160", 5, gwas_results$chr)
 
-gwas_results$chr <- gsub("chr6H_1_291690256", 6, rows.assoc$chr)
-gwas_results$chr <- gsub("chr6H_291690257_583380513", 6, rows.assoc$chr)
+gwas_results$chr <- gsub("chr6H_1_291690256", 6, gwas_results$chr)
+gwas_results$chr <- gsub("chr6H_291690257_583380513", 6, gwas_results$chr)
 
-gwas_results$chr <- gsub("chr7H_1_328612000", 7, rows.assoc$chr)
-gwas_results$chr <- gsub("chr7H_328612001_657224000", 7, rows.assoc$chr)
+gwas_results$chr <- gsub("chr7H_1_328612000", 7, gwas_results$chr)
+gwas_results$chr <- gsub("chr7H_328612001_657224000", 7, gwas_results$chr)
 
-gwas_results$chr <- gsub("chrUn_1_124887353", 0, rows.assoc$chr)
-gwas_results$chr <- gsub("chrUn_124887354_249774706", 0, rows.assoc$chr)
+gwas_results$chr <- gsub("chrUn_1_124887353", 0, gwas_results$chr)
+gwas_results$chr <- gsub("chrUn_124887354_249774706", 0, gwas_results$chr)
 
 write.table(gwas_results, file="gwas_results", quote=F, sep="\t", row.names=F, col.names=T)
 
 
 
 # Make the Manhattan plot on the gwasResults dataset
-manhattan(gwas_results, chr="chr", bp="ps", p="p_score")
+manhattan(gwas_results, chr="chr", bp="ps", p="p_score", col=c("lightpink2", "paleturquoise2"))
