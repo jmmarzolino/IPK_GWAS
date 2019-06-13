@@ -32,16 +32,15 @@ paste Accession_Codes GWAS_Row2 > formatted_phenotypes
 
 DIR=/rhome/rkett/bigdata/row_gwas
 cd $DIR
-GENOS=filtered.fam
-PHENOS=formatted_phenotypes
+GENOS=filtered2.fam
+PHENOS=formatted_phenotypes2
 
 # check that IDs in phenos and genos match
 DIFS=$(diff <(cut -d" " -f1 "$GENOS") <(cut -f1 "$PHENOS" | tail -n +2) | wc -l)
+# delete non-common entries:  ERR753224 from genotype data & ERR753318 from phenotype data
 
 # no differences between ID lists
 if [ "$DIFS" = 0 ]
 then
-	paste  <(cut -d" " -f1-5 "$GENOS") <(cut -f3- "$PHENOS" | tail -n +2) | sed 's/\t/ /g' > $(basename $GENOS).tmp
-	mv $(basename $GENOS).tmp "$GENOS"
-	head -n 1 "$PHENOS" | cut -f3- | sed 's/\t/\n/g' > ../../results/gwas/pheno_lst.txt
+	paste  <(cut -d" " -f1-5 "$GENOS") <(cut -f3- "$PHENOS" | tail -n +2) | sed 's/\t/ /g' > $(basename $GENOS)
 fi
