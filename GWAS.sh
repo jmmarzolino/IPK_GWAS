@@ -24,7 +24,7 @@ paste Accession_Codes GWAS_Row2 > formatted_phenotypes
 
 #!/bin/bash
 #SBATCH --job-name=GWAS
-#SBATCH -o GWAS.stdout
+#SBATCH -o GWAS2.stdout
 #SBATCH --ntasks=2
 #SBATCH --mem=64gb
 #SBATCH -t 2-00:00:00
@@ -32,15 +32,16 @@ paste Accession_Codes GWAS_Row2 > formatted_phenotypes
 
 DIR=/rhome/rkett/bigdata/row_gwas
 cd $DIR
-GENOS=filtered2.fam
-PHENOS=formatted_phenotypes2
+GENOS=filtered.fam
+PHENOS=formatted_phenotypes
 
 # check that IDs in phenos and genos match
 DIFS=$(diff <(cut -d" " -f1 "$GENOS") <(cut -f1 "$PHENOS" | tail -n +2) | wc -l)
-# delete non-common entries:  ERR753224 from genotype data & ERR753318 from phenotype data
 
 # no differences between ID lists
 if [ "$DIFS" = 0 ]
 then
-	paste  <(cut -d" " -f1-5 "$GENOS") <(cut -f3- "$PHENOS" | tail -n +2) | sed 's/\t/ /g' > $(basename $GENOS)
+	paste  <(cut -d" " -f1-5 "$GENOS") <(cut -f2 "$PHENOS" | tail -n +2) | sed 's/\t/ /g' > $(basename $GENOS).tmp
+	mv $(basename $GENOS).tmp "$GENOS"
+	head -n 1 "$PHENOS" | cut -f2 | sed 's/\t/\n/g' > GWAS3
 fi
