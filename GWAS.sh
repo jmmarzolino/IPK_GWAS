@@ -26,24 +26,22 @@ PHENOS=Phenotype_GWAS
 cut -f3 $PHENO > Accession_Codes
 cut -f8 $PHENO | cut -f2 --delimiter=\ > phenotype
 paste Accession_Codes phenotype > formatted_phenotypes
-
-# add phenotypes to .fam
-
+# use R Script to easily convert character-based phenotypes into simple numerics which will be accepted by gemma
+sbatch character_phenotype_conversion.R
 
 # GENERATE P VALUES WITH GENO AND PHENO FILES
 # check that IDs in phenos and genos match, make a list of the differences so they can be removed
-diff <(cut -d" " -f1 formatted.fam) <(cut -f1 formatted_row_phenotypes | tail -n +2) > samples_to_remove
-
-# remove ERR753224 from genotype file
-for line in samples_to_remove: do;
-  sed -i".bak" '/"$line"/d' Barley_exome_GH_LD_INDEL_MAF.fam
-
-# no differences between ID lists
-paste  <(cut -d" " -f1-5 Barley_exome_GH_LD_INDEL_MAF.fam) <(cut -f6 binary) > Barley_exome_GH_LD_INDEL_MAF.tmp
-mv Barley_exome_GH_LD_INDEL_MAF.tmp Barley_exome_GH_LD_INDEL_MAF.fam
-
+diff <(cut -d" " -f1 formatted_genotypes.fam) <(cut -f1 formatted_phenotypes_binary | tail -n +2) > diff_samples
+grep ">" diff_samples | (cut -f2 --delimiter=\>) > samples_to_remove
+# remove incongruent samples from genotype & phenotype file
+for line in samples_to_remove; do;
+  sed -i".bak" '/${line}/d' formatted_genotypes.fam
+  sed -i".bak" '/${line}/d' formatted_phenotypes_binary
+done
+# no more differences between ID lists, add phenotypes to .fam
+paste  <(cut -d" " -f1-5 formatted_genotypes.fam) <(cut -f6 formatted_phenotypes_binary) > formatted_genotypes_phenotypes.tmp
+cp formatted_genotypes_phenotypes.tmp formatted_genotypes.fam
 # calculate centered relatedness matrix
-/rhome/rkett/software/gemma0.98.1 -bfile filtered -gk 1 -outdir "results" -o related_matrix
-
-# association with mlm
-/rhome/rkett/software/gemma0.98.1 -bfile Barley_exome_GH_LD_INDEL_MAF -k results/related_matrix_binary.cXX.txt -lmm 4 -outdir results/ -o rows
+/rhome/rkett/software/gemma0.98.1 -bfile formatted_genotypes -gk 1 -outdir "results" -o related_matrix
+# genotype-phenotype association
+/rhome/rkett/software/gemma0.98.1 -bfile formatted_genotypes -k results/related_matrix.cXX.txt -lmm 4 -outdir "results" -o association
