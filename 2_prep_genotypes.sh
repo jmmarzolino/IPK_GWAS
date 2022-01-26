@@ -7,8 +7,8 @@
 #SBATCH -p koeniglab
 
 module load plink/1.90b3.38
-
-VCF=../../data/SNPs/africa_and1001.EVA_filtered.vcf.gz
+cd $LOCAL
+VCF = ${../../data/SNPs/africa_and1001.EVA_filtered.vcf.gz}
 
 ## Filter on MAF and missing data  
 plink --vcf "$VCF" --maf 0.01 --geno 0.05 --make-bed --out ../../results/gwas/filtered
