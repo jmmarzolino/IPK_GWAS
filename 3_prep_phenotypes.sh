@@ -1,13 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=prep_phenos
-#SBATCH -o std/%j.out
-#SBATCH -e std/%j.err
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=cfisc004@ucr.edu
+#SBATCH -o std/%j.stdout
 #SBATCH --ntasks=2
 #SBATCH --mem=16gb
-#SBATCH -t 1-00:00:00
-#SBATCH -p batch
+#SBATCH -t 20:00:00
+#SBATCH -p koeniglab
 
 # determine which seqs to use as phenotypes 
 Rscript 3b_prep_phenotypes.R
