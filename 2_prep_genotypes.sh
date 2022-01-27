@@ -13,8 +13,6 @@ cd $PROJECT_DIR
 #plink 2.0 is not yet fully usable on its own so use 1.90
 module load plink/1.90b3.38
 
-## Filter on MAF and missing data  
-plink --vcf "$VCF" --maf 0.01 --geno 0.05 --make-bed --out ../../results/gwas/filtered
 # all the sequencing files (separated and parsed?) are listed here
 #/rhome/jmarz001/shared/SEQ_RUNS/FULL_RAD_RECORDS/RECORDS.txt
 
@@ -25,3 +23,5 @@ VCF=/rhome/jlandis/bigdata/RADSeq/IPK/VCFtools/IPK_LD_pruned_SNPs.recode.vcf
 # IPK_SNP_set_progeny.vcf.recode.vcf.gz
 
 
+## Filter on MAF and missing data
+plink --vcf "$VCF" --maf 0.01 --geno 0.05 --make-bed --out IPK_LD_pruned_SNPs_refiltered
