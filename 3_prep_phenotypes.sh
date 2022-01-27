@@ -7,6 +7,7 @@
 #SBATCH -p koeniglab
 
 # determine which seqs to use as phenotypes 
+#character_phenotype_conversion
 Rscript 3b_prep_phenotypes.R
 
 # add phenotypes to .fam
